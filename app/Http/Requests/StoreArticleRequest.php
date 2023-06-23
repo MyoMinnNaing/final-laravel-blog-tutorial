@@ -27,7 +27,7 @@ class StoreArticleRequest extends FormRequest
             "category" => "required|exists:categories,id",
             "thumbnail" => "nullable|file|max:500|min:50|mimes:png,jpg",
             "photos" => "required|array|max:3",
-            "photos.*" => "file|max:500|min:50|mimes:png,jpg",
+            "photos.*" => "file|mimes:png,jpg",
         ];
     }
 }

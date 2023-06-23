@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 @section('content')
     <div class=" container">
@@ -8,8 +7,8 @@
                 <hr>
 
                 <div class=" mb-3">
-                    <a href="{{ route("article.create") }}" class="btn btn-outline-dark">Create</a>
-                    <a href="{{ route("article.index") }}" class="btn btn-outline-dark">All Articles</a>
+                    <a href="{{ route('article.create') }}" class="btn btn-outline-dark">Create</a>
+                    <a href="{{ route('article.index') }}" class="btn btn-outline-dark">All Articles</a>
                 </div>
 
                 <div>
@@ -26,9 +25,13 @@
                     </div>
                 </div>
 
-                
 
-                <img src="{{ asset(Storage::url($article->thumbnail)) }}" height="200" alt="">
+                @foreach ($article->photos as $photo)
+                    <a class="venobox" data-gall="aa" data-maxwidth="600px"
+                        href="{{ asset(Storage::url($photo->address)) }}">
+                        <img src="{{ asset(Storage::url($photo->address)) }}" alt="image alt" />
+                    </a>
+                @endforeach
 
 
 
@@ -36,3 +39,8 @@
         </div>
     </div>
 @endsection
+
+
+@push('script')
+    @vite(['resources/js/venobox.js'])
+@endpush

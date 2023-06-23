@@ -9,24 +9,32 @@
 // Bootstrap
 @import "bootstrap/scss/bootstrap";
 
-.list-thumbnail{
+.list-thumbnail {
     width: 50px;
     height: 50px;
     object-fit: cover;
 }
 
-.single-photo-update{
+.single-photo-update {
     height: 150px;
     background-size: auto 100px;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.upload-logo:nth-child(2){
+.upload-logo:nth-child(2) {
     display: none;
 }
 
-.article-img{
+.article-img {
     width: 100px;
     height: 100px;
+}
+
+.venobox {
+    img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+    }
 }
