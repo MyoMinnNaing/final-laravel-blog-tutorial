@@ -11,6 +11,11 @@
                     <a href="{{ route('article.index') }}" class="btn btn-outline-dark">All Articles</a>
                 </div>
 
+                <img src="{{ asset(Storage::url($article->thumbnail)) }}" height="200" alt="">
+
+
+
+
                 <div>
                     <h4>{{ $article->title }}</h4>
                     <div class="">
@@ -26,13 +31,13 @@
                 </div>
 
 
+
                 @foreach ($article->photos as $photo)
                     <a class="venobox" data-gall="aa" data-maxwidth="600px"
                         href="{{ asset(Storage::url($photo->address)) }}">
                         <img src="{{ asset(Storage::url($photo->address)) }}" alt="image alt" />
                     </a>
                 @endforeach
-
 
 
             </div>
