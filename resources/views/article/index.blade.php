@@ -8,8 +8,8 @@
 
                 <div class=" mb-3">
                     <a href="{{ route('article.create') }}" class="btn btn-outline-dark">Create</a>
-                    <a href="{{ route('article.index', ['show' => 'trash']) }}" class="btn btn-outline-dark">
-                        <i class=" bi bi-trash3"></i> Bin
+                    <a href="{{ route('soft-deleted-records.index', ['show' => 'trash']) }}" class="btn btn-outline-dark">
+                        <i class=" bi bi-trash3"></i> View deleted articles
                     </a>
                 </div>
 
@@ -87,7 +87,8 @@
                                         @endcan
 
                                         @if ($article->trashed())
-                                            <a href="{{ route('article.show',[$article->id,"restore" => "true"]) }}" class=" btn btn-sm btn-outline-dark">
+                                            <a href="{{ route('article.show', [$article->id, 'restore' => 'true']) }}"
+                                                class=" btn btn-sm btn-outline-dark">
                                                 <i class="bi bi-arrow-clockwise"></i>
                                             </a>
                                         @endif
@@ -95,7 +96,8 @@
 
                                     </div>
                                     <form id="aritcleDeleteFrom{{ $article->id }}" class=" d-inline-block"
-                                        action="{{ $article->trashed() ? route('article.forceDelete', $article->id)  : route('article.destroy', $article->id) }}" method="post">
+                                        action="{{ $article->trashed() ? route('article.forceDelete', $article->id) : route('article.destroy', $article->id) }}"
+                                        method="post">
                                         @method('delete')
                                         @csrf
 

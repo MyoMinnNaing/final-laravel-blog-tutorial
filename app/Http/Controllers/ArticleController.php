@@ -27,7 +27,7 @@ class ArticleController extends Controller
                 $builder->orWhere("description", "like", "%" . $keyword . "%");
             });
         })
-            ->when(request()->has('show') == "trash",fn($query) => $query->withTrashed() )
+            ->when(request()->has('show') == "trash", fn ($query) => $query->withTrashed())
 
             ->when(Auth::user()->role !== 'admin', function ($query) {
                 $query->where("user_id", Auth::id());
@@ -64,7 +64,7 @@ class ArticleController extends Controller
         // return $request;
 
         $savedThumbnail = null;
-        if($request->hasFile('thumbnail')){
+        if ($request->hasFile('thumbnail')) {
             // dd($request->file('thumbnail')->extension());
             $savedThumbnail = $request->file("thumbnail")->store("public/thumbnail");
             // $thumbnail = $request->file("thumbnail");
@@ -77,20 +77,20 @@ class ArticleController extends Controller
             "title" => $request->title,
             "slug" => Str::slug($request->title),
             "description" => $request->description,
-            "excerpt" => Str::words($request->description,30,"..."),
+            "excerpt" => Str::words($request->description, 30, "..."),
             "category_id" => $request->category,
             "thumbnail" => $savedThumbnail,
             "user_id" => Auth::id()
         ]);
 
-        if($request->hasFile('photos')){
+        if ($request->hasFile('photos')) {
             $photos = $request->file('photos');
             $savedPhotos = [];
-            foreach($photos as $photo){
+            foreach ($photos as $photo) {
                 $savedPhoto = $photo->store("public/photo");
                 $savedPhotos[] = [
                     "article_id" => $article->id,
-                    "address"=> $savedPhoto,
+                    "address" => $savedPhoto,
                     "created_at" => now(),
                     "updated_at" => now()
 
@@ -112,14 +112,11 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Article $article)
+
     {
 
-        if(request()->has("restore") == "true"){
-            Article::withTrashed()->findOrFail($id)->restore();
-        }
-
-        return view('article.show', ["article" => Article::findOrFail($id)]);
+        return view('article.show', compact('article'));
     }
 
     /**
@@ -150,11 +147,10 @@ class ArticleController extends Controller
 
 
         $savedThumbnail = $article->thumbnail;
-        if($request->hasFile('thumbnail')){
+        if ($request->hasFile('thumbnail')) {
             Storage::delete($article->thumbnail);
 
             $savedThumbnail = $request->file("thumbnail")->store("public/thumbnail");
-
         }
 
 
@@ -162,7 +158,7 @@ class ArticleController extends Controller
             "title" => $request->title,
             "slug" => Str::slug($request->title),
             "description" => $request->description,
-            "excerpt" => Str::words($request->description,30,"..."),
+            "excerpt" => Str::words($request->description, 30, "..."),
             "category_id" => $request->category,
             "thumbnail" => $savedThumbnail,
             "user_id" => Auth::id()
@@ -194,11 +190,12 @@ class ArticleController extends Controller
         return redirect()->route("article.index")->with("message", "Article is deleted");
     }
 
-    public function forceDelete($id){
+    // public function forceDelete($id)
+    // {
 
-        $article = Article::withTrashed()->findOrFail($id);
+    //     $article = Article::withTrashed()->findOrFail($id);
 
-        $article->forceDelete();
-        return redirect()->route("article.index")->with("message", "Article is deleted");
-    }
+    //     $article->forceDelete();
+    //     return redirect()->route("article.index")->with("message", "Article is deleted");
+    // }
 }
