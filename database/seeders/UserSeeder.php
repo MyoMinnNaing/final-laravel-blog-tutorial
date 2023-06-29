@@ -18,15 +18,15 @@ class UserSeeder extends Seeder
         User::factory()->create([
             "name" => "poe lay",
             "email" => "poe@gmail.com",
-            "password" => Hash::make("asdffdsa"),
+            "password" => Hash::make("asdfasdf"),
         ]);
 
         User::factory(10)->create();
 
         User::factory()->create([
-            "name" => "hein htet zan",
-            "email" => "hhz@gmail.com",
-            "password" => Hash::make("asdffdsa"),
+            "name" => "myominnaing",
+            "email" => "myominnaing.eng@gmail.com",
+            "password" => Hash::make("asdfasdf"),
             "role" => "admin"
         ]);
     }

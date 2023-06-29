@@ -99,6 +99,29 @@
                             @enderror
                         </div>
 
+                        <div class="mb-3">
+                            <label class=" form-label">Select Your tags</label>
+                            @foreach (App\Models\Tag::all() as $tag)
+                                <div class="form-check">
+                                    <input form="createArticle" class="form-check-input" type="checkbox" name="tags[]"
+                                        id="tag_{{ $tag->id }}"
+                                        {{ in_array($tag->id, old('tags', [])) ? 'checked' : '' }}
+                                        value="{{ $tag->id }}">
+
+                                    <label class="form-check-label" for="tag_{{ $tag->id }}">
+                                        {{ $tag->title }}
+                                    </label>
+                                </div>
+                            @endforeach
+
+                            @error('tags')
+                                <div class=" text-danger small">{{ $message }}</div>
+                            @enderror
+                            @error('tags.*')
+                                <div class=" text-danger small">{{ $message }}</div>
+                            @enderror
+                        </div>
+
 
 
                         <button form="createArticle" class=" w-100 d-block btn btn-primary">Save Article</button>
