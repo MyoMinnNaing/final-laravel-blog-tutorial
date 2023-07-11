@@ -8,30 +8,36 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $fillable = ["title","slug", "description","excerpt","thumbnail", "category_id", "user_id"];
+    use HasFactory, SoftDeletes;
+    protected $fillable = ["title", "slug", "description", "excerpt", "thumbnail", "category_id", "user_id"];
     public function user()
     {
+        // to retrieve user while articles are retrieving
         return $this->belongsTo(User::class);
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 
-    public function photos(){
+    public function photos()
+    {
         return $this->hasMany(Photo::class);
     }
 
-    public function visitors(){
+    public function visitors()
+    {
         return $this->hasMany(Visitor::class);
     }
 
-    public function tags(){
+    public function tags()
+    {
         return $this->belongsToMany(Tag::class);
     }
 }

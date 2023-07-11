@@ -18,7 +18,7 @@
                         <tr>
                             <th>#</th>
                             <th>Title</th>
-                            <th>Owner</th>
+                            <th>Article Count</th>
                             <th>Control</th>
                             <th>Updated At</th>
                             <th>Created At</th>
@@ -36,7 +36,7 @@
                                     </span>
                                 </td>
 
-                                <td>{{ $category->user->name }}</td>
+                                <td>{{ $category->articles->count() }}</td>
                                 <td>
                                     <div class="btn-group">
 
@@ -47,11 +47,11 @@
                                             </a>
                                         @endcan
 
-                                        @can('delete',$category)
-                                        <button form="aritcleDeleteFrom{{ $category->id }}"
-                                            class=" btn btn-sm btn-outline-dark">
-                                            <i class=" bi bi-trash3"></i>
-                                        </button>
+                                        @can('delete', $category)
+                                            <button form="aritcleDeleteFrom{{ $category->id }}"
+                                                class=" btn btn-sm btn-outline-dark">
+                                                <i class=" bi bi-trash3"></i>
+                                            </button>
                                         @endcan
 
                                     </div>

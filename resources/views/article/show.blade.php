@@ -17,7 +17,12 @@
 
 
                 <div>
-                    <h4>{{ $article->title }}</h4>
+                    <h4 class=" py-2 fw-bold text-primary">
+                        {{ $article->title }}
+                        ({{ join('-', $article->tags->pluck('title')->toArray()) }})
+                    </h4>
+                    {{-- <p>{{ dd($article->tags->pluck('title')) }}</p> --}}
+
                     <div class="">
                         <span class=" badge bg-black">
                             {{ $article->category_id }}
@@ -55,14 +60,12 @@
                     </thead>
                     <tbody>
                         @foreach ($article->visitors as $visitor)
-
-                        <tr>
-                            <td>{{ $visitor->id }}</td>
-                            <td>{{ $visitor->user->name }}</td>
-                            <td>{{ $visitor->created_at->format("h : i : s") }}</td>
-                            <td>{{ $visitor->created_at->format("d M Y") }}</td>
-                        </tr>
-
+                            <tr>
+                                <td>{{ $visitor->id }}</td>
+                                <td>{{ $visitor->user->name }}</td>
+                                <td>{{ $visitor->created_at->format('h : i : s') }}</td>
+                                <td>{{ $visitor->created_at->format('d M Y') }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

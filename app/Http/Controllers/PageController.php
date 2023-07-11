@@ -14,17 +14,19 @@ class PageController extends Controller
 {
 
 
-    public function validateTest(){
+    public function validateTest()
+    {
         $date = Carbon::now();
         $startDate = Carbon::now()->subMonths(3);
 
-        $period = CarbonPeriod::create($startDate,$date);
+        $period = CarbonPeriod::create($startDate, $date);
 
         return $period;
         // return view('validate-test');
     }
 
-    public function validateCheck(Request $request){
+    public function validateCheck(Request $request)
+    {
 
         $request->validate([
             // "title" => "required",
@@ -40,23 +42,17 @@ class PageController extends Controller
     }
 
 
-
-
-
-
-
-
     public function index()
     {
         $articles = Article::when(request()->has("keyword"), function ($query) {
             $query->where(function (Builder $builder) {
                 $keyword = request()->keyword;
                 $builder->where("title", "like", "%" . $keyword . "%");
-                $builder->orWhere("description", "like", "%" . $keyword . "%");
+                // $builder->orWhere("description", "like", "%" . $keyword . "%");
             });
         })
-            ->when(request()->has('category'),function($query){
-                $query->where("category_id",request()->category);
+            ->when(request()->has('category'), function ($query) {
+                $query->where("category_id", request()->category);
             })
             ->when(request()->has('title'), function ($query) {
                 $sortType = request()->title ?? 'asc';
@@ -69,21 +65,24 @@ class PageController extends Controller
         return view("welcome", compact('articles'));
     }
 
-    public function show($slug){
-        $article = Article::where("slug",$slug)->firstOrFail();
-        return view('detail',compact('article'));
+    public function show($slug)
+    {
+        $article = Article::where("slug", $slug)->firstOrFail();
+        return view('detail', compact('article'));
     }
 
     public function categorized($slug)
     {
-        $category = Category::where("slug",$slug)->firstOrFail();
-        return view('categorized',[
+        // $categories = Category::latest('id')->get();
+
+        $category = Category::where("slug", $slug)->firstOrFail();
+        return view('categorized', [
             "category" => $category,
             "articles" => $category->articles()->when(request()->has("keyword"), function ($query) {
                 $query->where(function (Builder $builder) {
                     $keyword = request()->keyword;
                     $builder->where("title", "like", "%" . $keyword . "%");
-                    $builder->orWhere("description", "like", "%" . $keyword . "%");
+                    // $builder->orWhere("description", "like", "%" . $keyword . "%");
                 });
             })->paginate(10)->withQueryString()
         ]);

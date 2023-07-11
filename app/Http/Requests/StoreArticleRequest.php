@@ -26,9 +26,9 @@ class StoreArticleRequest extends FormRequest
             "title" => "required|min:10|max:255",
             "description" => "required|min:100",
             "category" => "required|exists:categories,id",
-            "thumbnail" => "nullable|file|max:500|min:50|mimes:png,jpg",
+            "thumbnail" => "nullable|file|max:500|mimes:png,jpg",
             "photos" => "required|array|max:3",
-            "photos.*" => "file|max:500|min:50|mimes:png,jpg",
+            "photos.*" => "file|max:500|mimes:png,jpg",
             "tags" => "nullable|array|max:3",
             "tags.*" => "exists:tags,id"
         ];

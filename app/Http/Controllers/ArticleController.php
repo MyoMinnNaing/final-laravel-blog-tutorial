@@ -25,7 +25,7 @@ class ArticleController extends Controller
                 $keyword = request()->keyword;
 
                 $builder->where("title", "like", "%" . $keyword . "%");
-                $builder->orWhere("description", "like", "%" . $keyword . "%");
+                // $builder->orWhere("description", "like", "%" . $keyword . "%");
             });
         })
             ->when(request()->has('show') == "trash", fn ($query) => $query->withTrashed())
@@ -41,9 +41,6 @@ class ArticleController extends Controller
             // ->dd()
             ->latest("id")
             ->paginate(7)->withQueryString();
-
-
-
 
 
         return view("article.index", compact('articles'));
@@ -122,9 +119,11 @@ class ArticleController extends Controller
     public function show($id)
     {
 
-        if(request()->has("restore") == "true"){
+        if (request()->has("restore") == "true") {
             Article::withTrashed()->findOrFail($id)->restore();
         }
+
+
 
 
 
@@ -162,7 +161,7 @@ class ArticleController extends Controller
 
         $savedThumbnail = $article->thumbnail;
         if ($request->hasFile('thumbnail')) {
-            Storage::delete($article->thumbnail);
+            Storage::delete('$article->thumbnail');
 
             $savedThumbnail = $request->file("thumbnail")->store("public/thumbnail");
         }
@@ -177,6 +176,7 @@ class ArticleController extends Controller
             "thumbnail" => $savedThumbnail,
             "user_id" => Auth::id()
         ]);
+
         $article->tags()->sync($request->tags);
 
         return redirect()->route("article.index")->with("message", $article->title . " is updated");
@@ -205,11 +205,12 @@ class ArticleController extends Controller
         return redirect()->route("article.index")->with("message", "Article is deleted");
     }
 
-    // public function forceDelete($id)
-    // {
+    public function forceDelete($id)
+    {
 
-    //     $article = Article::withTrashed()->findOrFail($id);
+        $article = Article::withTrashed()->findOrFail($id);
 
+        $article->tags()->detach();
         $article->forceDelete();
         return redirect()->route("article.index")->with("message", "Article is deleted");
     }
