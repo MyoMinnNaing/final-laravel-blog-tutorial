@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use App\Mail\NewPostMail;
 use App\Models\Article;
 use App\Models\Photo;
+use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -108,6 +111,17 @@ class ArticleController extends Controller
 
         $article->tags()->attach($request->tags);
 
+        // sending email to users for new post
+
+        // login ၀င်ထားသော user မဟုတ်တဲ့ သူ ၃ ယောက် သို့ မဟုတ်  အားလုံး ကို အရင် ရှာ
+        $notLogiUusers = User::where("id", "!=", Auth::id())->limit(3)->get();
+        foreach ($notLogiUusers as $notLogiUuser) {
+            $receiver = $notLogiUuser->name;
+            $receiverEmail = $notLogiUuser->email;
+            // dd($receiverEmail);
+
+            Mail::to($receiverEmail)->send(new NewPostMail($receiver, $article));
+        }
 
 
         return redirect()->route("article.index")->with("message", $article->title . " is created");
