@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
+use App\Models\Comment;
+use App\Mail\CommentMail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
-use App\Models\Comment;
-use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -30,14 +33,25 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
+
+        // save comment to database
         $comment = new Comment();
         $comment->content = $request->content;
         $comment->user_id = Auth::id();
         $comment->article_id = $request->article_id;
-        if($request->has("parent_id")){
+        if ($request->has("parent_id")) {
             $comment->parent_id = $request->parent_id;
         }
         $comment->save();
+
+        // seding email testing
+        // comment လာပေးရင် ဘယ် article ကို  ဘယ် account (loginUser) က comment ပေးနေလည်း ဆို article ပိုင်ရှင် ကို email ပို့ပေးပါတယ်။။
+        $article = Article::find($request->article_id);
+        $loginUser = Auth::user()->name;
+        $receiverEmail = $article->user->email;
+        Mail::to($receiverEmail)->send(new CommentMail($loginUser, $article));
+
+
         return redirect()->back();
     }
 
@@ -70,7 +84,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        $this->authorize('delete',$comment);
+        $this->authorize('delete', $comment);
         $comment->delete();
 
         return redirect()->back();

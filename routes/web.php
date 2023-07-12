@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SoftDeletedRecordController;
@@ -21,6 +22,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::controller(MailController::class)->group(function () {
+    Route::get('send-mail', [MailController::class, 'index']);
+});
 
 Route::controller(PageController::class)->group(function () {
     Route::get("/", "index")->name("index");
