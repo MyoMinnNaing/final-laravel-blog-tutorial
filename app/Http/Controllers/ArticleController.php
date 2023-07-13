@@ -114,14 +114,14 @@ class ArticleController extends Controller
         // sending email to users for new post
 
         // login ၀င်ထားသော user မဟုတ်တဲ့ သူ ၃ ယောက် သို့ မဟုတ်  အားလုံး ကို အရင် ရှာ
-        $notLogiUusers = User::where("id", "!=", Auth::id())->limit(3)->get();
-        foreach ($notLogiUusers as $notLogiUuser) {
-            $receiver = $notLogiUuser->name;
-            $receiverEmail = $notLogiUuser->email;
-            // dd($receiverEmail);
+        // $notLogiUusers = User::where("id", "!=", Auth::id())->limit(3)->get();
+        // foreach ($notLogiUusers as $notLogiUuser) {
+        //     $receiver = $notLogiUuser->name;
+        //     $receiverEmail = $notLogiUuser->email;
+        //     dd($receiverEmail);
 
-            Mail::to($receiverEmail)->send(new NewPostMail($receiver, $article));
-        }
+        //     Mail::to($receiverEmail)->send(new NewPostMail($receiver, $article));
+        // }
 
 
         return redirect()->route("article.index")->with("message", $article->title . " is created");

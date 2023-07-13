@@ -49,7 +49,9 @@ class CommentController extends Controller
         $article = Article::find($request->article_id);
         $loginUser = Auth::user()->name;
         $receiverEmail = $article->user->email;
+
         Mail::to($receiverEmail)->send(new CommentMail($loginUser, $article));
+        // myominnaing.eng@gmail.com
 
 
         return redirect()->back();
